@@ -97,12 +97,10 @@ function Lots() {
     setEditingLot(null);
   };
 
-  const handleUpdateScan = (updatedLot: Lot) => {
-    setCreatedLots((prev) =>
-      prev.map((item) => (item.id === updatedLot.id ? updatedLot : item))
-    );
-
+  const handleUpdateScan = async (_updatedLot: Lot) => {
     setOpen(false);
+
+    await loadLots();
   };
 
   const handleEdit = (lot: Lot) => {
@@ -116,43 +114,30 @@ function Lots() {
   };
 
   const handleDelete = async (id: string) => {
-
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this lot?\n\nThis will also delete related production data."
     );
-
 
     if (!confirmDelete) {
       return;
     }
 
-
     try {
-
       await lotAPI.delete(id);
-
 
       setCreatedLots((prev) =>
         prev.filter((item) => item._id !== id)
       );
 
-
       setCompletedLots((prev) =>
         prev.filter((item) => item._id !== id)
       );
 
-
       alert("Lot deleted successfully");
-
-
     } catch (error) {
-
       console.error("Delete failed", error);
-
       alert("Failed to delete lot");
-
     }
-
   };
 
   return (

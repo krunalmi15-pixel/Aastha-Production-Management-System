@@ -23,7 +23,7 @@ import {
 
 function ItemMaster() {
   const [items, setItems] = useState<Item[]>([]);
-  const [lots, setLots] = useState<any[]>([]);
+  const [, setLots] = useState<any[]>([]);
   const [productions, setProductions] = useState<any[]>([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");

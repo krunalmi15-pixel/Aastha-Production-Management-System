@@ -32,7 +32,7 @@ function LotTable({
     }
 
     try {
-      const data = await lotAPI.print(
+      await lotAPI.print(
         String(printLot._id)
       );
 

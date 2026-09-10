@@ -20,7 +20,6 @@ import {
   Save,
   Building2,
   Printer,
-  FileText,
 } from "lucide-react";
 
 function Settings() {

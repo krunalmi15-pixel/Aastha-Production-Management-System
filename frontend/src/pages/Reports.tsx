@@ -22,7 +22,6 @@ import {
 import {
   FileSpreadsheet,
   FileDown,
-  Search,
   ChevronDown,
   ChevronRight,
 } from "lucide-react";
@@ -401,89 +400,8 @@ function Reports() {
 
   // ==========================
   // QUALITY SUMMARY
-  // ==========================
+  // =======================
 
-
-  const qualitySummary:any =
-  useMemo(()=>{
-
-
-    const summary:any = {};
-
-
-
-    reports.forEach((lot:any)=>{
-
-
-      const quality =
-      lot.lotId?.quality ||
-      lot.quality ||
-      "NA";
-
-
-
-      summary[quality] =
-      (summary[quality] || 0)
-      +
-      Number(lot.quantity || 0);
-
-
-    });
-
-
-
-    return summary;
-
-
-  },[reports]);
-
-
-
-
-  const qualityTotal =
-  Object.values(qualitySummary)
-  .reduce(
-    (sum:number,value:any)=>
-    sum + Number(value),
-    0
-  );
-
-
-
-  // ==========================
-  // CUTTER SUMMARY
-  // ==========================
-
-
-  const cutterSummary:any =
-  useMemo(()=>{
-
-
-    const summary:any = {};
-
-
-    reports.forEach((lot:any)=>{
-
-
-      const cutter =
-      lot.cutterOperatorId?.name ||
-      "NA";
-
-
-      summary[cutter] =
-      (summary[cutter] || 0)
-      +
-      Number(lot.quantity || 0);
-
-
-    });
-
-
-
-    return summary;
-
-
-  },[reports]);
 
 
 
@@ -1170,52 +1088,52 @@ function Reports() {
                 </tr>
 
 
-              </thead>
+            </thead>
 
 
 
-              <tbody>
+            <tbody>
 
 
-              {
-              reports.map((item:any)=>(
+            {
+            reports.map((item:any)=>(
 
 
-                <tr
-                key={item._id}
-                className="border-b"
-                >
+              <tr
+              key={item._id}
+              className="border-b"
+              >
 
 
-                  <td className="p-3">
-                  {item.date}</td><td className="p-3">
-                  {item.lotNumber}</td><td className="p-3">
-                  {item.number}</td><td className="p-3">
-                  {item.percentage}</td><td className="p-3">
-                  {item.quality}</td><td className="p-3">
-                  {item.quantity}</td><td className="p-3">
-                  {item.cutterMachine}</td><td className="p-3">
-                  {item.cutterEmployee}</td><td className="p-3">
-                  {item.sliderMachine}</td><td className="p-3">
-                  {item.operator}</td><td className="p-3">
-                  {item.cutType}</td><td className="p-3">
-                  {item.status}</td>
+                <td className="p-3">
+                {item.date}</td><td className="p-3">
+                {item.lotNumber}</td><td className="p-3">
+                {item.number}</td><td className="p-3">
+                {item.percentage}</td><td className="p-3">
+                {item.quality}</td><td className="p-3">
+                {item.quantity}</td><td className="p-3">
+                {item.cutterMachine}</td><td className="p-3">
+                {item.cutterEmployee}</td><td className="p-3">
+                {item.sliderMachine}</td><td className="p-3">
+                {item.operator}</td><td className="p-3">
+                {item.cutType}</td><td className="p-3">
+                {item.status}</td>
 
 
-                </tr>
+              </tr>
 
 
-              ))
-              }
+            ))
+            }
 
 
-              </tbody>
+          </tbody>
 
 
-            </table>
+        </table>
 
 
-          </div>
+        </div>
 
 
 
@@ -1405,56 +1323,56 @@ function Reports() {
                 </tr>
 
 
-              </thead>
+            </thead>
 
 
 
-              <tbody>
+          <tbody>
 
 
-              {
+          {
 
-              todayReports.map((item:any)=>(
-
-
-                <tr
-                key={item._id}
-                className="border-b"
-                >
+          todayReports.map((item:any)=>(
 
 
-                  <td className="p-3">
-                  {item.date}</td><td className="p-3">
-                  {item.lotNumber}</td><td className="p-3">
-                  {item.number}</td><td className="p-3">
-                  {item.percentage}</td><td className="p-3">
-                  {item.quality}</td><td className="p-3">
-                  {item.quantity}</td><td className="p-3">
-                  {item.cutterMachine}</td><td className="p-3">
-                  {item.cutterEmployee}</td><td className="p-3">
-                  {item.sliderMachine}</td><td className="p-3">
-                  {item.operator}</td><td className="p-3">
-                  {item.cutType}</td><td className="p-3">
-                  {item.status}</td>
+            <tr
+            key={item._id}
+            className="border-b"
+            >
 
 
-
-                </tr>
-
-
-              ))
-
-              }
+              <td className="p-3">
+              {item.date}</td><td className="p-3">
+              {item.lotNumber}</td><td className="p-3">
+              {item.number}</td><td className="p-3">
+              {item.percentage}</td><td className="p-3">
+              {item.quality}</td><td className="p-3">
+              {item.quantity}</td><td className="p-3">
+              {item.cutterMachine}</td><td className="p-3">
+              {item.cutterEmployee}</td><td className="p-3">
+              {item.sliderMachine}</td><td className="p-3">
+              {item.operator}</td><td className="p-3">
+              {item.cutType}</td><td className="p-3">
+              {item.status}</td>
 
 
 
-              </tbody>
+            </tr>
 
 
-            </table>
+          ))
+
+          }
 
 
-          </div>
+
+        </tbody>
+
+
+        </table>
+
+
+        </div>
 
 
 
@@ -1629,267 +1547,132 @@ function Reports() {
 
 
 
-            </div>
-
-
-
-
-
-            {
-            attendanceSummaryOpen &&
-
-            <div className="p-5">
-
-
-              <table className="w-full border">
-
-
-            <thead className="border-b">
-
-
-              <tr>
-
-
-              <th className="p-3 text-left">
-                Date
-              </th>
-
-
-              <th className="p-3 text-left">
-                Present
-              </th>
-
-
-              <th className="p-3 text-left">
-                Absent
-              </th>
-
-
-              <th className="p-3 text-left">
-                Half Day
-              </th>
-
-
-              </tr>
-
-
-          </thead>
-
-
-
-          <tbody>
-
-
-            {attendanceSummary.map((item: any) => (
-             <tr key={item.date} className="border-b">
-              <td className="p-3">
-                {item.date}
-              </td>
-              <td className="p-3">
-                {item.present}
-              </td>
-              <td className="p-3">
-                {item.absent}
-              </td>
-              <td className="p-3">
-                {item.halfDay}
-              </td>
-             </tr>
-          ))}
-
-
-          </tbody>
-
-
-          </table>
-
-
-
-          </div>
-
-            }
-
-
-
           </div>
 
 
 
 
 
+          {
+          attendanceSummaryOpen &&
+
+          <div className="p-5">
 
 
-          {/* EMPLOYEE WISE */}
+            <table className="w-full border">
 
 
-
-          <div className="border rounded-xl">
-
-
-
-            <div
-
-            onClick={()=>setEmployeeAttendanceOpen(
-              !employeeAttendanceOpen
-            )}
-
-            className="
-            flex justify-between items-center
-            px-5 py-4 cursor-pointer
-            "
-
-            >
-
-
-              <h2 className="font-semibold text-lg">
-
-                Employee Wise Attendance
-
-              </h2>
-
-
-
-              {
-              employeeAttendanceOpen
-              ?
-              <ChevronDown/>
-              :
-              <ChevronRight/>
-              }
-
-
-
-            </div>
-
-
-
-
-
-
-            {
-
-            employeeAttendanceOpen &&
-
-
-            <div className="p-5 space-y-4">
-
-              <div className="mb-5">
-                <label className="text-sm font-medium">
-                  Select Employee
-                </label>
-                <select
-                className="
-                h-10 rounded-md border px-3 w-full
-                "
-                value={selectedEmployee}
-                onChange={(e)=>setSelectedEmployee(e.target.value)}
-                >
-                  <option value="All">
-                    All Employees
-                  </option>
-                  {employees.map(
-                    (emp:any)=>(
-                      <option key={emp} value={emp}>
-                        {emp}
-                      </option>
-                    )
-                  )}
-                </select>
-              </div>
-
-
-              <table className="w-full border">
-
-
-            <thead className="border-b">
+          <thead className="border-b">
 
 
             <tr>
 
 
-              <th className="p-3 text-left">
-                Employee
-              </th>
+            <th className="p-3 text-left">
+              Date
+            </th>
 
 
-              <th className="p-3 text-left">
-                Present
-              </th>
+            <th className="p-3 text-left">
+              Present
+            </th>
 
 
-              <th className="p-3 text-left">
-                Absent
-              </th>
+            <th className="p-3 text-left">
+              Absent
+            </th>
 
 
-              <th className="p-3 text-left">
-                Half Day
-              </th>
+            <th className="p-3 text-left">
+              Half Day
+            </th>
 
 
             </tr>
 
 
-            </thead>
+        </thead>
+
+
+
+        <tbody>
+
+
+          {attendanceSummary.map((item: any) => (
+            <tr key={item.date} className="border-b">
+            <td className="p-3">
+              {item.date}
+            </td>
+            <td className="p-3">
+              {item.present}
+            </td>
+            <td className="p-3">
+              {item.absent}
+            </td>
+            <td className="p-3">
+              {item.halfDay}
+            </td>
+            </tr>
+          ))}
+
+
+        </tbody>
+
+
+        </table>
+
+
+
+        </div>
+
+          }
+
+
+
+        </div>
 
 
 
 
-            <tbody>
+
+
+
+        {/* EMPLOYEE WISE */}
+
+
+
+        <div className="border rounded-xl">
+
+
+
+          <div
+
+          onClick={()=>setEmployeeAttendanceOpen(
+            !employeeAttendanceOpen
+          )}
+
+          className="
+          flex justify-between items-center
+          px-5 py-4 cursor-pointer
+          "
+
+          >
+
+
+            <h2 className="font-semibold text-lg">
+
+              Employee Wise Attendance
+
+            </h2>
+
 
 
             {
-
-            employeeAttendance.map(
-            (emp:any)=>(
-
-
-            <tr
-            key={emp.employee}
-            className="border-b"
-            >
-
-
-              <td className="p-3">
-                {emp.employee}
-              </td>
-
-
-              <td className="p-3">
-                {emp.present}
-              </td>
-
-
-              <td className="p-3">
-                {emp.absent}
-              </td>
-
-
-              <td className="p-3">
-                {emp.halfDay}
-              </td>
-
-
-            </tr>
-
-
-            )
-
-            )
-
-
-            }
-
-
-
-            </tbody>
-
-
-            </table>
-
-            </div>
-
-
+            employeeAttendanceOpen
+            ?
+            <ChevronDown/>
+            :
+            <ChevronRight/>
             }
 
 
@@ -1899,7 +1682,142 @@ function Reports() {
 
 
 
-        </CollapsibleContent>
+
+
+          {
+
+          employeeAttendanceOpen &&
+
+
+          <div className="p-5 space-y-4">
+
+            <div className="mb-5">
+              <label className="text-sm font-medium">
+                Select Employee
+              </label>
+              <select
+              className="
+              h-10 rounded-md border px-3 w-full
+              "
+              value={selectedEmployee}
+              onChange={(e)=>setSelectedEmployee(e.target.value)}
+              >
+                <option value="All">
+                  All Employees
+                </option>
+                {employees.map(
+                  (emp:any)=>(
+                    <option key={emp} value={emp}>
+                      {emp}
+                    </option>
+                  )
+                )}
+              </select>
+            </div>
+
+
+            <table className="w-full border">
+
+
+          <thead className="border-b">
+
+
+          <tr>
+
+
+            <th className="p-3 text-left">
+              Employee
+            </th>
+
+
+            <th className="p-3 text-left">
+              Present
+            </th>
+
+
+            <th className="p-3 text-left">
+              Absent
+            </th>
+
+
+            <th className="p-3 text-left">
+              Half Day
+            </th>
+
+
+          </tr>
+
+
+      </thead>
+
+
+
+
+      <tbody>
+
+
+      {
+
+      employeeAttendance.map(
+      (emp:any)=>(
+
+
+      <tr
+      key={emp.employee}
+      className="border-b"
+      >
+
+
+        <td className="p-3">
+          {emp.employee}
+        </td>
+
+
+        <td className="p-3">
+          {emp.present}
+        </td>
+
+
+        <td className="p-3">
+          {emp.absent}
+        </td>
+
+
+        <td className="p-3">
+          {emp.halfDay}
+        </td>
+
+
+      </tr>
+
+
+      )
+
+      )
+
+
+      }
+
+
+
+      </tbody>
+
+
+      </table>
+
+      </div>
+
+
+          }
+
+
+
+      </div>
+
+
+
+
+      </CollapsibleContent>
 
 
 

@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/api";
+const API_URL = "https://aastha-backend-fucs.onrender.com/api";
 
 export const authAPI = {
 
@@ -8,7 +8,7 @@ export const authAPI = {
   }) => {
 
     const res = await fetch(
-      "http://localhost:5000/api/auth/login",
+      `${API_URL}/auth/login`,
       {
         method:"POST",
         headers:{

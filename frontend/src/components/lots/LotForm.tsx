@@ -96,7 +96,7 @@ function LotForm({ editingLot, onSave }: Props) {
 
       const payload = {
         itemId: form.itemId,
-        startDate: form.lotStartDate,
+        startDate: form.lotStartDate || new Date().toISOString().split("T")[0],
         quality: form.quality,
         number: form.number,
         percentage: Number(form.percentage),

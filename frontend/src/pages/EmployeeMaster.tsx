@@ -1,8 +1,6 @@
 import { employeeAPI, productionAPI } from "@/services/api";
 import { useEffect, useMemo, useState } from "react";
 
-import { sampleLots } from "@/data/sampleLots";
-import { sampleAttendance } from "@/data/sampleAttendance";
 
 import type { Employee } from "@/types/Employee";
 import type { Attendance } from "@/types/Attendance";
@@ -36,7 +34,7 @@ import {
 
 function EmployeeMaster() {
   const [employees, setEmployees] = useState<Employee[]>([]);
-  const [attendance, setAttendance] = useState<Attendance[]>(sampleAttendance);
+  const [attendance, setAttendance] = useState<Attendance[]>([]);
   const [productions, setProductions] = useState<any[]>([]);
 
   const [attendanceOpen, setAttendanceOpen] = useState(false);
@@ -68,7 +66,7 @@ function EmployeeMaster() {
     setEmployees(data);
   };
 
-  const [attendanceDate, setAttendanceDate] = useState(
+  const [attendanceDate] = useState(
     new Date().toISOString().split("T")[0]
   );
 
@@ -134,24 +132,6 @@ function EmployeeMaster() {
     tillDate,
     selectedEmployee
   ]);
-
-  const employeePerformance = useMemo(() => {
-    return employees.map((emp) => {
-      const lots = sampleLots.filter(
-        (lot) =>
-          lot.operatorName === emp.name &&
-          lot.lotStartDate >= fromDate &&
-          lot.lotStartDate <= tillDate
-      );
-
-      return {
-        name: emp.name,
-        totalLots: lots.length,
-        totalQty: lots.reduce((sum, lot) => sum + Number(lot.quantity), 0),
-        totalHours: 0,
-      };
-    });
-  }, [employees, fromDate, tillDate]);
 
   const filteredEmployees = employees.filter(
     (emp) =>
