@@ -139,11 +139,32 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 5000;
 
 
+const startServer = async () => {
 
-app.listen(PORT, () => {
+  try {
 
-  console.log(
-    `Server running on port ${PORT}`
-  );
+    await connectDB();
 
-});
+    app.listen(PORT, () => {
+
+      console.log(
+        `🚀 Server running on port ${PORT}`
+      );
+
+    });
+
+  } catch (error) {
+
+    console.error(
+      "Server startup failed",
+      error
+    );
+
+    process.exit(1);
+
+  }
+
+};
+
+
+startServer();
