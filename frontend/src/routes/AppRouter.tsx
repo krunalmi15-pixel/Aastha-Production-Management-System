@@ -9,6 +9,9 @@ import EmployeeMaster from "@/pages/EmployeeMaster";
 import Machines from "@/pages/Machines";
 import Reports from "@/pages/Reports";
 import Settings from "@/pages/Settings";
+import Login from "@/pages/Login";
+
+import ProtectedRoute from "./ProtectedRoute";
 
 
 function AppRoutes() {
@@ -17,66 +20,119 @@ function AppRoutes() {
 
     <Routes>
 
-      <Route element={<Layout />}>
+
+      {/* PUBLIC ROUTE */}
+
+      <Route
+        path="/login"
+        element={<Login />}
+      />
+
+
+
+      {/* PROTECTED ROUTES */}
+
+      <Route
+
+        element={
+
+          <ProtectedRoute>
+
+            <Layout />
+
+          </ProtectedRoute>
+
+        }
+
+      >
 
 
         <Route
+
           path="/"
+
           element={
+
             <Navigate
+
               to="/dashboard"
+
               replace
+
             />
+
           }
+
         />
 
 
 
         <Route
+
           path="/dashboard"
+
           element={<Dashboard />}
+
         />
 
 
 
         <Route
+
           path="/lots"
+
           element={<Lots />}
+
         />
 
 
 
         <Route
+
           path="/items"
+
           element={<ItemMaster />}
+
         />
 
 
 
         <Route
+
           path="/employees"
+
           element={<EmployeeMaster />}
+
         />
 
 
 
         <Route
+
           path="/machines"
+
           element={<Machines />}
+
         />
 
 
 
         <Route
+
           path="/reports"
+
           element={<Reports />}
+
         />
 
 
 
         <Route
+
           path="/settings"
+
           element={<Settings />}
+
         />
 
 

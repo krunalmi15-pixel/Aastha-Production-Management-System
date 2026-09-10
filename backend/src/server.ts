@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 
+import authRoutes from "./routes/authRoutes";
 import connectDB from "./config/database";
 import employeeRoutes from "./routes/employeeRoutes";
 import attendanceRoutes from "./routes/attendanceRoutes";
@@ -59,6 +60,7 @@ app.use("/api/summary", summaryRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/reports", reportRoutes);
 app.use("/api/settings", settingsRoutes);
+app.use("/api/auth", authRoutes);
 
 
 
