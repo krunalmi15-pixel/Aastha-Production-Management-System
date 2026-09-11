@@ -1,43 +1,101 @@
-const { app, BrowserWindow } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  screen
+} = require("electron");
+
 const path = require("path");
 
-function createWindow() {
-  const win = new BrowserWindow({
-    width: 1400,
-    height: 900,
 
-    webPreferences: {
-      nodeIntegration: false,
-      contextIsolation: true,
-    },
+let mainWindow;
+
+
+function createWindow() {
+
+  const display =
+    screen.getPrimaryDisplay();
+
+  const { width, height } =
+    display.workAreaSize;
+
+
+  mainWindow = new BrowserWindow({
+
+    width: Math.floor(width * 0.9),
+
+    height: Math.floor(height * 0.9),
+
+    minWidth:1200,
+
+    minHeight:700,
+
+    show:false,
+
+
+    title:
+    "Aastha Engineering Production Management System",
+
+
+    webPreferences:{
+      nodeIntegration:false,
+      contextIsolation:true
+    }
+
   });
 
-  win.loadURL("http://localhost:5173");
+
+
+  mainWindow.once(
+    "ready-to-show",
+    ()=>{
+      mainWindow.show();
+    }
+  );
+
+
+  mainWindow.loadURL(
+    "http://localhost:5173"
+  );
+
+
+  mainWindow.setMenu(null);
+
+
 }
 
-app.whenReady().then(() => {
+
+
+app.whenReady()
+.then(()=>{
+
   createWindow();
+
 
   app.on(
     "activate",
-    () => {
-      if (
-        BrowserWindow.getAllWindows()
-        .length === 0
-      ) {
+    ()=>{
+
+      if(
+        BrowserWindow
+        .getAllWindows()
+        .length===0
+      ){
         createWindow();
       }
+
     }
   );
+
 });
 
+
+
 app.on(
-  "window-all-closed",
-  () => {
-    if (
-      process.platform !== "darwin"
-    ) {
-      app.quit();
-    }
-  }
-);
+"window-all-closed",
+()=>{
+
+ if(process.platform!=="darwin"){
+   app.quit();
+ }
+
+});

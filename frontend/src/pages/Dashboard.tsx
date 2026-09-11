@@ -8,6 +8,12 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import {
+  Crown,
+  Medal,
+  Scissors,
+  UserRound
+} from "lucide-react";
 import StatCard from "@/components/StatCard";
 import {
   Card,
@@ -46,6 +52,19 @@ function Dashboard() {
 
     loadDashboard();
   }, []);
+
+  const getRankIcon = (index: number) => {
+    if (index === 0) {
+      return <Crown className="h-5 w-5 text-yellow-500" />;
+    }
+    if (index === 1) {
+      return <Medal className="h-5 w-5 text-gray-400" />;
+    }
+    if (index === 2) {
+      return <Medal className="h-5 w-5 text-orange-500" />;
+    }
+    return null;
+  };
 
   if (!data) {
     return <div>Loading Dashboard...</div>;
@@ -119,21 +138,26 @@ function Dashboard() {
         {/* Cutter Performer */}
         <Card>
           <CardHeader>
-            <CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <Scissors className="h-5 w-5 text-red-500" />
               Cutter Top Performer
             </CardTitle>
           </CardHeader>
 
-          <CardContent className="p-4">
-            {performance.cutters.slice(0,5).map(
-              (employee:any,index:number)=>(
+          <CardContent className="p-4 space-y-2">
+            {performance.cutters.slice(0, 5).map(
+              (employee: any, index: number) => (
                 <div
                   key={employee.name}
-                  className="flex justify-between py-2 border-b text-sm"
+                  className="flex items-center justify-between border-b py-3 text-sm"
                 >
-                  <span>
-                    {index+1}. {employee.name}
-                  </span>
+                  <div className="flex items-center gap-3">
+                    <span>{index + 1}.</span>
+                    {getRankIcon(index)}
+                    <span className={index < 3 ? "font-bold" : ""}>
+                      {employee.name}
+                    </span>
+                  </div>
                   <strong>
                     {employee.production}
                   </strong>
@@ -146,21 +170,26 @@ function Dashboard() {
         {/* Operator Performer */}
         <Card>
           <CardHeader>
-            <CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <UserRound className="h-5 w-5 text-blue-500" />
               Operator Top Performer
             </CardTitle>
           </CardHeader>
 
-          <CardContent className="p-4">
-            {performance.operators.slice(0,5).map(
-              (employee:any,index:number)=>(
+          <CardContent className="p-4 space-y-2">
+            {performance.operators.slice(0, 5).map(
+              (employee: any, index: number) => (
                 <div
                   key={employee.name}
-                  className="flex justify-between py-2 border-b text-sm"
+                  className="flex items-center justify-between border-b py-3 text-sm"
                 >
-                  <span>
-                    {index+1}. {employee.name}
-                  </span>
+                  <div className="flex items-center gap-3">
+                    <span>{index + 1}.</span>
+                    {getRankIcon(index)}
+                    <span className={index < 3 ? "font-bold" : ""}>
+                      {employee.name}
+                    </span>
+                  </div>
                   <strong>
                     {employee.production}
                   </strong>
