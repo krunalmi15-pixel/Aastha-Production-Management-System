@@ -2,7 +2,7 @@
   "name": "frontend",
   "private": true,
   "main": "electron/main.cjs",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Aastha Engineering Production Management System",
   "author": "Aastha Engineering",
   "type": "module",
@@ -59,24 +59,18 @@
     "vite": "^8.1.1"
   },
   "build": {
-
-  "appId": "com.aastha.engineering",
-
-  "productName":
-  "Aastha Engineering PMS",
-
-  "directories": {
-    "output": "release"
-  },
-
-  "files": [
-    "dist/**/*",
-    "electron/**/*"
-  ],
-
-  "win": {
-    "target": "nsis"
+    "appId": "com.aastha.engineering",
+    "productName": "Aastha Engineering PMS",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "electron/assets/icon.ico"
+    }
   }
-
-}
 }
