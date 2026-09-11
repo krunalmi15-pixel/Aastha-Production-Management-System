@@ -91,6 +91,18 @@ function LotForm({ editingLot, onSave }: Props) {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (
+      !form.itemId ||
+      !form.quality ||
+      !form.number ||
+      !form.percentage ||
+      !form.quantity ||
+      !form.lotStartDate
+    ) {
+      alert("Please fill all lot details before saving");
+      return;
+    }
+
     try {
       let savedLot: Lot;
 

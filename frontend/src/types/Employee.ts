@@ -24,6 +24,10 @@ export interface Employee {
 
   ifscCode?: string;
 
+  role:
+  | "Operator"
+  | "Cutter";
+
 
   status: 
     | "Active"

@@ -464,7 +464,9 @@ router.put("/:id", async(req,res)=>{
         number:req.body.number,
         percentage:req.body.percentage,
         quantity:req.body.quantity,
-        startDate:req.body.startDate
+        startDate:req.body.startDate,
+        scanDate:req.body.scanDate,
+        status:req.body.status
       },
 
       {

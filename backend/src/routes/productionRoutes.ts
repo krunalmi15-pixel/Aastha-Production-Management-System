@@ -168,16 +168,15 @@ router.post("/", async (req, res) => {
 
   }
 
-  catch(error){
+  catch(error:any){
 
-    console.error(error);
-
+    console.error(
+      "PRODUCTION CREATE ERROR:",
+      error
+    );
 
     res.status(500).json({
-
-      message:
-      "Failed to create production"
-
+      message: error.message
     });
 
   }

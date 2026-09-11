@@ -143,8 +143,11 @@ function ScanBarcode({ onUpdate, editingLot }: Props) {
         setForm(null);
         setMessage("No lot found");
       }
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      console.log(
+        "SCAN ERROR:",
+        error.response?.data || error.message
+      );
       setForm(null);
       setMessage("No lot found");
     }
@@ -162,6 +165,18 @@ function ScanBarcode({ onUpdate, editingLot }: Props) {
   const save = async () => {
     if (!form?._id) return;
 
+    if (
+      !selectedMachineId ||
+      !selectedOperatorId ||
+      !selectedCutterMachineId ||
+      !selectedCutterOperatorId ||
+      !form.cutType ||
+      !form.quantity
+    ) {
+      alert("Please fill all production details before completing the lot");
+      return;
+    }
+
     try {
       const existingProductionRecord =
         await productionAPI.getByLotId(String(form._id));
@@ -176,6 +191,7 @@ function ScanBarcode({ onUpdate, editingLot }: Props) {
         {
           quantity: Number(form.quantity),
           scanDate: form.scanDate,
+          status: "Completed",
         }
       );
 
@@ -220,6 +236,7 @@ function ScanBarcode({ onUpdate, editingLot }: Props) {
             productionData
           );
         } else {
+          console.log("PRODUCTION DATA:", productionData);
           await productionAPI.create(
             productionData
           );
@@ -228,8 +245,11 @@ function ScanBarcode({ onUpdate, editingLot }: Props) {
 
       onUpdate(updatedLot);
       alert("Production Completed Successfully");
-    } catch (error) {
-      console.error("Production save failed", error);
+    } catch (error: any) {
+      console.log(
+        "SCAN ERROR:",
+        error.response?.data || error.message
+      );
       alert("Failed to save production");
     }
   };
@@ -387,12 +407,17 @@ function ScanBarcode({ onUpdate, editingLot }: Props) {
                 update("operatorName", e.target.value);
               }}
             >
-              <option value="">Select Operator</option>
-              {employees.map((item) => (
-                <option key={item._id} value={item.name}>
-                  {item.name}
-                </option>
-              ))}
+              <option value="">
+                Select Operator
+              </option>
+
+              {employees
+                .filter((item) => item.role === "Operator")
+                .map((item) => (
+                  <option key={item._id} value={item.name}>
+                    {item.name}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -435,12 +460,17 @@ function ScanBarcode({ onUpdate, editingLot }: Props) {
                 update("cutterName", e.target.value);
               }}
             >
-              <option value="">Select Cutter</option>
-              {employees.map((item) => (
-                <option key={item._id} value={item.name}>
-                  {item.name}
-                </option>
-              ))}
+              <option value="">
+                Select Cutter
+              </option>
+
+              {employees
+                .filter((item) => item.role === "Cutter")
+                .map((item) => (
+                  <option key={item._id} value={item.name}>
+                    {item.name}
+                  </option>
+                ))}
             </select>
           </div>
 

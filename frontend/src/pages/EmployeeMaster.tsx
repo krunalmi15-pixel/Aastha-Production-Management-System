@@ -1,7 +1,6 @@
 import { employeeAPI, productionAPI } from "@/services/api";
 import { useEffect, useMemo, useState } from "react";
 
-
 import type { Employee } from "@/types/Employee";
 import type { Attendance } from "@/types/Attendance";
 
@@ -386,6 +385,7 @@ function EmployeeMaster() {
                 <thead className="border-b">
                   <tr>
                     <th className="py-3 text-left">Name</th>
+                    <th className="text-left">Type</th>
                     <th className="text-left">Phone</th>
                     <th className="text-left">Aadhaar</th>
                     <th className="text-left">Bank</th>
@@ -398,6 +398,9 @@ function EmployeeMaster() {
                   {filteredEmployees.map((employee) => (
                     <tr key={employee._id} className="border-b">
                       <td className="py-4 font-medium">{employee.name}</td>
+                      <td>
+                        <Badge>{employee.role}</Badge>
+                      </td>
                       <td>{employee.phone}</td>
                       <td>[Aadhaar Redacted]</td>
                       <td>{employee.bankName}</td>
@@ -448,11 +451,12 @@ function EmployeeMaster() {
           {viewEmployee && (
             <div className="space-y-3">
               <p><b>Name:</b> {viewEmployee.name}</p>
+              <p><b>Type:</b> {viewEmployee.role}</p>
               <p><b>Phone:</b> {viewEmployee.phone}</p>
               <p><b>Address:</b> {viewEmployee.address}</p>
               <p><b>Joining Date:</b> {viewEmployee.joiningDate}</p>
               <p>
-                <b>Aadhaar:</b> {viewEmployee.aadhaar || "-"}</p>
+                <b>Aadhaar:</b> [Aadhaar Redacted]</p>
               <p><b>Account Number:</b> {viewEmployee.accountNumber || "-"}</p>
               <p><b>Bank:</b> {viewEmployee.bankName || "-"}</p>
               <p><b>Branch:</b> {viewEmployee.branch || "-"}</p>

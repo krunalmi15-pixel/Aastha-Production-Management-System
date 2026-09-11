@@ -1,149 +1,94 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-
 export interface IEmployee extends Document {
-
   name: string;
-
   phone: string;
-
   address: string;
-
   joiningDate: string;
-
+  role:
+    | "Operator"
+    | "Cutter";
 
   aadhaar?: string;
-
   accountNumber?: string;
-
   bankName?: string;
-
   branch?: string;
-
   ifscCode?: string;
-
 
   status:
     | "Active"
     | "Inactive";
 
-
   createdAt: Date;
-
   updatedAt: Date;
-
 }
-
-
 
 const EmployeeSchema = new Schema<IEmployee>(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
 
-{
+    phone: {
+      type: String,
+      required: true,
+    },
 
-  name: {
+    address: {
+      type: String,
+      required: true,
+    },
 
-    type: String,
+    joiningDate: {
+      type: String,
+      required: true,
+    },
 
-    required: true,
+    role: {
+      type: String,
+      enum: [
+        "Operator",
+        "Cutter"
+      ],
+      required: true,
+    },
 
+    aadhaar: {
+      type: String,
+    },
+
+    accountNumber: {
+      type: String,
+    },
+
+    bankName: {
+      type: String,
+    },
+
+    branch: {
+      type: String,
+    },
+
+    ifscCode: {
+      type: String,
+    },
+
+    status: {
+      type: String,
+      enum: [
+        "Active",
+        "Inactive"
+      ],
+      default: "Active",
+    },
   },
-
-
-  phone: {
-
-    type: String,
-
-    required: true,
-
-  },
-
-
-  address: {
-
-    type: String,
-
-    required: true,
-
-  },
-
-
-  joiningDate: {
-
-    type: String,
-
-    required: true,
-
-  },
-
-
-  aadhaar: {
-
-    type: String,
-
-  },
-
-
-  accountNumber: {
-
-    type: String,
-
-  },
-
-
-  bankName: {
-
-    type: String,
-
-  },
-
-
-  branch: {
-
-    type: String,
-
-  },
-
-
-  ifscCode: {
-
-    type: String,
-
-  },
-
-
-  status: {
-
-    type: String,
-
-    enum: [
-
-      "Active",
-
-      "Inactive"
-
-    ],
-
-    default: "Active",
-
-  },
-
-
-},
-
-{
-
-  timestamps:true,
-
-}
-
+  {
+    timestamps: true,
+  }
 );
 
-
-
 export default mongoose.model<IEmployee>(
-
-"Employee",
-
-EmployeeSchema
-
+  "Employee",
+  EmployeeSchema
 );

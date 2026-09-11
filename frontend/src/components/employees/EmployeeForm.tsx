@@ -19,6 +19,7 @@ function EmployeeForm({ editingEmployee, onSave }: Props) {
     phone: "",
     address: "",
     joiningDate: new Date().toISOString().split("T")[0],
+    role: "Operator",
     aadhaar: "",
     accountNumber: "",
     bankName: "",
@@ -31,6 +32,7 @@ function EmployeeForm({ editingEmployee, onSave }: Props) {
     if (editingEmployee) {
       setForm({
         ...editingEmployee,
+        role: editingEmployee.role || "Operator",
         aadhaar:
           editingEmployee.aadhaar || "",
         accountNumber:
@@ -63,6 +65,7 @@ function EmployeeForm({ editingEmployee, onSave }: Props) {
         phone: form.phone,
         address: form.address,
         joiningDate: form.joiningDate,
+        role: form.role,
         aadhaar: form.aadhaar,
         accountNumber: form.accountNumber,
         bankName: form.bankName,
@@ -70,6 +73,8 @@ function EmployeeForm({ editingEmployee, onSave }: Props) {
         ifscCode: form.ifscCode,
         status: form.status,
       };
+      
+      console.log("EMPLOYEE DATA SENT:", employeeData);
 
       if (editingEmployee && editingEmployee._id) {
         savedEmployee = await employeeAPI.update(
@@ -135,6 +140,27 @@ function EmployeeForm({ editingEmployee, onSave }: Props) {
           value={form.joiningDate}
           onChange={(e) => update("joiningDate", e.target.value)}
         />
+      </div>
+
+      <div>
+        <Label>Employee Type</Label>
+        <select
+          className="h-10 w-full rounded-md border px-3"
+          value={form.role || ""}
+          onChange={(e) =>
+            update("role", e.target.value)
+          }
+        >
+          <option value="">
+            Select Type
+          </option>
+          <option value="Operator">
+            Operator
+          </option>
+          <option value="Cutter">
+            Cutter
+          </option>
+        </select>
       </div>
 
       <div>
