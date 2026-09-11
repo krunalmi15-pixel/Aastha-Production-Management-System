@@ -428,4 +428,134 @@ router.get("/monthly-production", async(req,res)=>{
 
 
 
+// EMPLOYEE PERFORMANCE
+router.get("/employee-performance", async(req,res)=>{
+
+  try{
+
+    const production = await Production.aggregate([
+
+      {
+        $group:{
+          _id:"$operatorId",
+          totalProduction:{
+            $sum:"$quantity"
+          }
+        }
+      },
+
+      {
+        $sort:{
+          totalProduction:-1
+        }
+      },
+
+      {
+        $limit:5
+      }
+
+    ]);
+
+
+    const operatorData = await Promise.all(
+
+      production.map(async(item)=>{
+
+        const employee =
+          await Employee.findById(item._id);
+
+
+        return {
+
+          name:
+          employee?.name || "Unknown",
+
+          production:
+          item.totalProduction
+
+        };
+
+      })
+
+    );
+
+
+
+    const cutterProduction =
+    await Production.aggregate([
+
+      {
+        $group:{
+          _id:"$cutterOperatorId",
+
+          totalProduction:{
+            $sum:"$quantity"
+          }
+        }
+      },
+
+
+      {
+        $sort:{
+          totalProduction:-1
+        }
+      },
+
+
+      {
+        $limit:5
+      }
+
+    ]);
+
+
+
+    const cutterData = await Promise.all(
+
+      cutterProduction.map(async(item)=>{
+
+        const employee =
+        await Employee.findById(item._id);
+
+
+        return {
+
+          name:
+          employee?.name || "Unknown",
+
+          production:
+          item.totalProduction
+
+        };
+
+      })
+
+    );
+
+
+
+    res.json({
+
+      operators:operatorData,
+
+      cutters:cutterData
+
+    });
+
+
+  }
+  catch(error){
+
+    console.error(error);
+
+    res.status(500).json({
+      message:"Performance loading failed"
+    });
+
+  }
+
+});
+
+
+
 export default router;

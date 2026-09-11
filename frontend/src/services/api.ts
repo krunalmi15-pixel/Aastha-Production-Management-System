@@ -1,49 +1,41 @@
-const API_URL = "https://aastha-backend-fucs.onrender.com/api";
+export const API_URL = "https://aastha-backend-fucs.onrender.com/api";
 
 export const authAPI = {
-
-  login: async(data:{
-    email:string;
-    password:string;
+  login: async (data: {
+    email: string;
+    password: string;
   }) => {
-
     const res = await fetch(
       `${API_URL}/auth/login`,
       {
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json"
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        body:JSON.stringify(data)
+        body: JSON.stringify(data),
       }
     );
 
-    if(!res.ok){
+    if (!res.ok) {
       throw new Error("Login failed");
     }
 
     return res.json();
-
-  }
-
+  },
 };
 
 export const api = {
-  get: async (url:string, options:any = {}) => {
-
-    const query =
-      options.params
-      ?
-      "?" + new URLSearchParams(options.params).toString()
-      :
-      "";
+  get: async (url: string, options: any = {}) => {
+    const query = options.params
+      ? "?" + new URLSearchParams(options.params).toString()
+      : "";
 
     const response = await fetch(
       `${API_URL}${url}${query}`
     );
 
     return response;
-  }
+  },
 };
 
 export const employeeAPI = {
@@ -129,7 +121,7 @@ export const employeeAPI = {
         }
       );
       return response.json();
-    }
+    },
   },
 
   machines: {
@@ -181,7 +173,7 @@ export const employeeAPI = {
         }
       );
       return response.json();
-    }
+    },
   },
 
   items: {
@@ -233,7 +225,7 @@ export const employeeAPI = {
         }
       );
       return response.json();
-    }
+    },
   },
 
   lots: {
@@ -294,8 +286,8 @@ export const employeeAPI = {
         }
       );
       return response.json();
-    }
-  }
+    },
+  },
 };
 
 export const productionAPI = {
@@ -339,7 +331,7 @@ export const productionAPI = {
       }
     );
     return response.json();
-  }
+  },
 };
 
 export const lotAPI = {
@@ -456,8 +448,14 @@ export const dashboardAPI = {
     const response = await fetch(
       `${API_URL}/dashboard`
     );
+  
     return response.json();
-  }
+  },
+
+  employeePerformance: () =>
+    fetch(
+      `${API_URL}/dashboard/employee-performance`
+    ).then((res) => res.json()),
 };
 
 export const reportAPI = {
@@ -465,7 +463,7 @@ export const reportAPI = {
     const query = new URLSearchParams({
       from: params.from,
       to: params.to,
-      status: params.status
+      status: params.status,
     });
 
     const response = await fetch(
@@ -479,7 +477,7 @@ export const reportAPI = {
       `${API_URL}/reports/today?status=${status}`
     );
     return response.json();
-  }
+  },
 };
 
 export const attendanceAPI = {
@@ -512,7 +510,7 @@ export const attendanceAPI = {
       }
     );
     return response.json();
-  }
+  },
 };
 
 export const settingsAPI = {
@@ -535,5 +533,5 @@ export const settingsAPI = {
       }
     );
     return response.json();
-  }
+  },
 };

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import {
   BarChart,
   Bar,
@@ -9,21 +8,22 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-
 import StatCard from "@/components/StatCard";
-
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
 import { dashboardAPI } from "@/services/api";
 
 function Dashboard() {
   const [data, setData] = useState<any>(null);
   const [monthlyProduction, setMonthlyProduction] = useState<any[]>([]);
+  const [performance, setPerformance] = useState({
+    cutters: [],
+    operators: []
+  });
 
   useEffect(() => {
     const loadDashboard = async () => {
@@ -36,6 +36,9 @@ function Dashboard() {
         ).then((res) => res.json());
 
         setMonthlyProduction(monthly);
+
+        const performanceData = await dashboardAPI.employeePerformance();
+        setPerformance(performanceData);
       } catch (error) {
         console.error("Dashboard loading failed", error);
       }
@@ -57,39 +60,115 @@ function Dashboard() {
         </p>
       </div>
 
-      <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-lg">Monthly Production</CardTitle>
-        </CardHeader>
+      <div className="grid gap-4 md:grid-cols-3">
+        <StatCard
+          title="Total Production"
+          value={data.totalQuantity}
+        />
 
-        <CardContent>
-          <ResponsiveContainer width="100%" height={220}>
-            <BarChart
-              data={monthlyProduction}
-              barCategoryGap="35%"
-              margin={{
-                top: 20,
-                right: 20,
-                left: 10,
-                bottom: 10,
-              }}
+        <StatCard
+          title="Completed Lots"
+          value={data.completedLots}
+        />
+
+        <StatCard
+          title="Today's Production"
+          value={data.todayProduction}
+        />
+      </div>
+
+      <div className="grid gap-6 xl:grid-cols-[2fr_1fr_1fr]">
+        {/* Monthly Chart */}
+        <Card className="h-fit">
+          <CardHeader>
+            <CardTitle>
+              Monthly Production
+            </CardTitle>
+          </CardHeader>
+
+          <CardContent>
+            <ResponsiveContainer
+              width="100%"
+              height={280}
             >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis allowDecimals={false} />
-              <Tooltip />
-              <Bar dataKey="production" barSize={35} radius={[6, 6, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
+              <BarChart
+                data={monthlyProduction}
+              >
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                />
+                <XAxis
+                  dataKey="month"
+                />
+                <YAxis />
+                <Tooltip />
+                <Bar
+                  dataKey="production"
+                  radius={[
+                    6,
+                    6,
+                    0,
+                    0
+                  ]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
 
-      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-5">
-        <StatCard title="Total Production" value={data.totalQuantity} />
-        <StatCard title="Completed Lots" value={data.completedLots} />
-        <StatCard title="Active Employees" value={data.activeEmployees} />
-        <StatCard title="Active Machines" value={data.activeMachines} />
-        <StatCard title="Today's Production" value={data.todayProduction} />
+        {/* Cutter Performer */}
+        <Card>
+          <CardHeader>
+            <CardTitle>
+              Cutter Top Performer
+            </CardTitle>
+          </CardHeader>
+
+          <CardContent className="p-4">
+            {performance.cutters.slice(0,5).map(
+              (employee:any,index:number)=>(
+                <div
+                  key={employee.name}
+                  className="flex justify-between py-2 border-b text-sm"
+                >
+                  <span>
+                    {index+1}. {employee.name}
+                  </span>
+                  <strong>
+                    {employee.production}
+                  </strong>
+                </div>
+              )
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Operator Performer */}
+        <Card>
+          <CardHeader>
+            <CardTitle>
+              Operator Top Performer
+            </CardTitle>
+          </CardHeader>
+
+          <CardContent className="p-4">
+            {performance.operators.slice(0,5).map(
+              (employee:any,index:number)=>(
+                <div
+                  key={employee.name}
+                  className="flex justify-between py-2 border-b text-sm"
+                >
+                  <span>
+                    {index+1}. {employee.name}
+                  </span>
+                  <strong>
+                    {employee.production}
+                  </strong>
+                </div>
+              )
+            )}
+          </CardContent>
+        </Card>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
