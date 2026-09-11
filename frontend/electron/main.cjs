@@ -5,10 +5,52 @@ const {
 } = require("electron");
 
 const path = require("path");
+const { spawn } = require("child_process");
 
 let mainWindow;
+let backendProcess;
 
 const isDev = !app.isPackaged;
+
+function startBackend() {
+  const backendPath = app.isPackaged
+    ? path.join(
+        process.resourcesPath,
+        "backend",
+        "dist",
+        "server.js"
+      )
+    : path.join(
+        __dirname,
+        "../../backend/dist/server.js"
+      );
+
+  backendProcess = spawn(
+    "node",
+    [backendPath],
+    {
+      windowsHide: true
+    }
+  );
+
+  backendProcess.stdout.on(
+    "data",
+    (data) => {
+      console.log(
+        `Backend: ${data}`
+      );
+    }
+  );
+
+  backendProcess.stderr.on(
+    "data",
+    (data) => {
+      console.error(
+        `Backend Error: ${data}`
+      );
+    }
+  );
+}
 
 function createWindow() {
   const display = screen.getPrimaryDisplay();
@@ -66,6 +108,7 @@ function createWindow() {
 
 app.whenReady()
 .then(() => {
+  startBackend();
   createWindow();
 
   app.on(
@@ -85,6 +128,10 @@ app.whenReady()
 app.on(
   "window-all-closed",
   () => {
+    if (backendProcess) {
+      backendProcess.kill();
+    }
+
     if (
       process.platform !== "darwin"
     ) {
