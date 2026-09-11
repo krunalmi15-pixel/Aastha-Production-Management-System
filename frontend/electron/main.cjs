@@ -46,12 +46,19 @@ function createWindow() {
       "http://localhost:5173"
     );
   } else {
-    mainWindow.loadFile(
-      path.join(
-        __dirname,
-        "../dist/index.html"
+    mainWindow
+      .loadFile(
+        path.join(
+          __dirname,
+          "../dist/index.html"
+        )
       )
-    );
+      .catch((err) => {
+        console.log(
+          "Failed loading app:",
+          err
+        );
+      });
   }
 
   mainWindow.setMenu(null);
