@@ -1,4 +1,4 @@
-export const API_URL = "https://aastha-backend-fucs.onrender.com/api";
+export const API_URL = "http://localhost:5000/api";
 
 export const authAPI = {
   login: async (data: {
@@ -448,7 +448,15 @@ export const dashboardAPI = {
     const response = await fetch(
       `${API_URL}/dashboard`
     );
-  
+
+    return response.json();
+  },
+
+  monthlyProduction: async () => {
+    const response = await fetch(
+      `${API_URL}/dashboard/monthly-production`
+    );
+
     return response.json();
   },
 

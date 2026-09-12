@@ -10,46 +10,83 @@ const { spawn } = require("child_process");
 let mainWindow;
 let backendProcess;
 
+const gotTheLock = app.requestSingleInstanceLock();
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on("second-instance", () => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
+    }
+  });
+}
+
 const isDev = !app.isPackaged;
 
 function startBackend() {
-  const backendPath = app.isPackaged
-    ? path.join(
-        process.resourcesPath,
-        "backend",
-        "dist",
-        "server.js"
-      )
-    : path.join(
-        __dirname,
-        "../../backend/dist/server.js"
-      );
 
-  backendProcess = spawn(
-    "node",
-    [backendPath],
-    {
-      windowsHide: true
-    }
-  );
+  return new Promise((resolve) => {
 
-  backendProcess.stdout.on(
-    "data",
-    (data) => {
-      console.log(
-        `Backend: ${data}`
-      );
-    }
-  );
+    const backendPath = app.isPackaged
+      ? path.join(
+          process.resourcesPath,
+          "backend",
+          "dist",
+          "server.js"
+        )
+      : path.join(
+          __dirname,
+          "../../backend/dist/server.js"
+        );
 
-  backendProcess.stderr.on(
-    "data",
-    (data) => {
-      console.error(
-        `Backend Error: ${data}`
-      );
-    }
-  );
+
+    backendProcess = spawn(
+      process.execPath,
+      [backendPath],
+      {
+        windowsHide: true,
+        cwd: path.dirname(backendPath)
+      }
+    );
+
+
+    backendProcess.stdout.on(
+      "data",
+      (data) => {
+
+        const message = data.toString();
+
+        console.log(message);
+
+        if (message.includes("Server running on port 5000")) {
+          resolve();
+        }
+
+      }
+    );
+
+
+    backendProcess.stderr.on(
+      "data",
+      (data) => {
+        console.error(data.toString());
+      }
+    );
+
+
+    backendProcess.on(
+      "exit",
+      (code) => {
+        console.log(
+          "Backend exited:",
+          code
+        );
+      }
+    );
+
+  });
+
 }
 
 function createWindow() {
@@ -106,9 +143,10 @@ function createWindow() {
   mainWindow.setMenu(null);
 }
 
-app.whenReady()
-.then(() => {
-  startBackend();
+app.whenReady().then(async () => {
+
+  await startBackend();
+
   createWindow();
 
   app.on(
@@ -123,13 +161,15 @@ app.whenReady()
       }
     }
   );
+
 });
 
 app.on(
   "window-all-closed",
   () => {
     if (backendProcess) {
-      backendProcess.kill();
+      backendProcess.kill("SIGTERM");
+      backendProcess = null;
     }
 
     if (

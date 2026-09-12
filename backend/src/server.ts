@@ -31,9 +31,6 @@ import settingsRoutes from "./routes/settingsRoutes";
 
 const app = express();
 
-// Connect MongoDB
-connectDB();
-
 // Middlewares
 app.use(
   cors({

@@ -37,9 +37,8 @@ function Dashboard() {
         const result = await dashboardAPI.get();
         setData(result);
 
-        const monthly = await fetch(
-          "http://localhost:5000/api/dashboard/monthly-production"
-        ).then((res) => res.json());
+        const monthly =
+          await dashboardAPI.monthlyProduction();
 
         setMonthlyProduction(monthly);
 
