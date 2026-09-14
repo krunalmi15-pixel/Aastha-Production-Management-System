@@ -28,6 +28,8 @@ function startBackend() {
 
   return new Promise((resolve) => {
 
+    let resolved = false;
+
     const backendPath = app.isPackaged
       ? path.join(
           process.resourcesPath,
@@ -41,8 +43,11 @@ function startBackend() {
         );
 
 
+    console.log("Starting backend:", backendPath);
+
+
     backendProcess = spawn(
-      process.execPath,
+      "node",
       [backendPath],
       {
         windowsHide: true,
@@ -51,16 +56,34 @@ function startBackend() {
     );
 
 
+    backendProcess.on("error", (err)=>{
+      console.error("Backend spawn error:", err);
+    });
+
+
     backendProcess.stdout.on(
       "data",
       (data) => {
 
         const message = data.toString();
 
-        console.log(message);
+        console.log(
+          "BACKEND:",
+          message
+        );
 
-        if (message.includes("Server running on port 5000")) {
+
+        if (
+          message.includes(
+            "Server running on port 5000"
+          )
+          &&
+          !resolved
+        ) {
+
+          resolved = true;
           resolve();
+
         }
 
       }
@@ -70,20 +93,46 @@ function startBackend() {
     backendProcess.stderr.on(
       "data",
       (data) => {
-        console.error(data.toString());
+
+        console.error(
+          "BACKEND ERROR:",
+          data.toString()
+        );
+
       }
     );
 
 
     backendProcess.on(
       "exit",
-      (code) => {
+      (code)=>{
+
         console.log(
           "Backend exited:",
           code
         );
+
       }
     );
+
+
+    // IMPORTANT
+    // Do not block Electron forever
+    setTimeout(()=>{
+
+      if(!resolved){
+
+        console.log(
+          "Backend started timeout - continuing"
+        );
+
+        resolved = true;
+        resolve();
+
+      }
+
+    },5000);
+
 
   });
 
@@ -125,13 +174,13 @@ function createWindow() {
       "http://localhost:5173"
     );
   } else {
+    const indexPath = path.join(
+      __dirname,
+      "../dist/index.html"
+    );
+    console.log("Loading frontend:", indexPath);
     mainWindow
-      .loadFile(
-        path.join(
-          __dirname,
-          "../dist/index.html"
-        )
-      )
+      .loadFile(indexPath)
       .catch((err) => {
         console.log(
           "Failed loading app:",

@@ -40,8 +40,14 @@ function Login(){
 
     }
     catch(error){
+      
+      console.error("LOGIN ERROR:", error);
 
-      alert("Invalid Email or Password");
+      alert(
+        error instanceof Error
+        ? error.message
+        : "Login failed"
+      );
 
     }
 
